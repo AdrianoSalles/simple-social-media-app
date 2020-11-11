@@ -1,9 +1,9 @@
-module.exports.validateRegisterInput = (
+module.exports.validateRegisterInput = ({
   username,
   email,
   password,
-  confirmPassword
-) => {
+  confirmPassword,
+}) => {
   const errors = {};
 
   if (username.trim() === '') {
