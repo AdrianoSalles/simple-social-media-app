@@ -9,16 +9,16 @@ module.exports = {
       const { username } = checkAuth(context);
 
       if (body.trim() === '') {
-        throw new UserInputError('Empty comment', {
-          errors: { body: 'Comment body must not be empty' },
-        });
+        const errors = { body: 'Comment body must not be empty' };
+        throw new UserInputError('Empty comment', { errors });
       }
 
       const post = await Post.findById(postId);
       const createdAt = new Date().toISOString();
 
       if (post) {
-        post.comments.unshift({ body, username, createdAt });
+        const comment = { body, username, createdAt };
+        post.comments.unshift(comment);
         await post.save();
 
         return post;
