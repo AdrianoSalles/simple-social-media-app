@@ -27,9 +27,11 @@ module.exports.validateRegisterInput = ({
     }
   }
 
+  const hasErrors = Object.keys(errors).length < 1;
+
   return {
     errors,
-    valid: Object.keys(errors).length < 1,
+    valid: hasErrors,
   };
 };
 
@@ -44,8 +46,10 @@ module.exports.validateLoginInput = (username, password) => {
     errors.password = 'Password must not be empty';
   }
 
+  const hasErrors = Object.keys(errors).length < 1;
+
   return {
     errors,
-    valid: Object.keys(errors).length < 1,
+    valid: hasErrors,
   };
 };
