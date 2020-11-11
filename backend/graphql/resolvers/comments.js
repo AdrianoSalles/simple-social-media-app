@@ -1,4 +1,4 @@
-const { UserInputError } = require('apollo-server');
+const { UserInputError, AuthenticationError } = require('apollo-server');
 
 const Post = require('../../models/Post');
 const checkAuth = require('../../util/checkAuth');
@@ -26,8 +26,32 @@ const createComment = async (_, { postId, body }, context) => {
   }
 };
 
+// Delete comment
+const deleteComment = async (_, { postId, commentId }, context) => {
+  const { username } = checkAuth(context);
+  const post = await Post.findById(postId);
+
+  if (post) {
+    const comment = post.comments.find((c) => c.id === commentId);
+
+    if (comment && comment.username === username) {
+      const commentIndex = post.comments.indexOf(comment);
+
+      post.comments.splice(commentIndex, 1);
+      await post.save();
+      return post;
+    }
+
+    // Throw an error if the user is not the owner
+    throw new AuthenticationError('Action not allowed');
+  } else {
+    throw new UserInputError('Post not found');
+  }
+};
+
 module.exports = {
   Mutation: {
     createComment,
+    deleteComment,
   },
 };
