@@ -30,8 +30,6 @@ module.exports = {
     createPost: async (_, { body }, context) => {
       const user = checkAuth(context);
 
-      console.log(user);
-
       const createdAt = new Date().toUTCString();
       const newPost = new Post({
         body,
