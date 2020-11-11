@@ -17,11 +17,11 @@ const getPost = async (_, { postId }) => {
   try {
     const post = await Post.findById(postId);
 
-    if (post) {
-      return post;
-    } else {
+    if (!post) {
       throw new Error('Post not found');
     }
+
+    return post;
   } catch (e) {
     throw new Error(e);
   }

@@ -18,9 +18,8 @@ const createComment = async (_, { postId, body }, context) => {
   if (post) {
     const comment = { body, username, createdAt };
     post.comments.unshift(comment);
-    await post.save();
 
-    return post;
+    return await post.save();
   } else {
     throw new UserInputError('Post not found');
   }
@@ -36,10 +35,9 @@ const deleteComment = async (_, { postId, commentId }, context) => {
 
     if (comment && comment.username === username) {
       const commentIndex = post.comments.indexOf(comment);
-
       post.comments.splice(commentIndex, 1);
-      await post.save();
-      return post;
+
+      return await post.save();
     }
 
     // Throw an error if the user is not the owner
